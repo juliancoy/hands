@@ -9,10 +9,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 import { HandLandmarker, FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0";
-import { handleFingerState, stopAll } from '/js/soundSynthesis.js';
+import { handleFingerState, stopAll, initialize } from '/js/soundSynthesis.js';
 const demosSection = document.getElementById("demos");
 let handLandmarker = undefined;
-let runningMode = "IMAGE";
+let runningMode = "VIDEO";
 let enableWebcamButton;
 let webcamRunning = false;
 // Before we can use HandLandmarker class we must wait for it to finish
@@ -94,6 +94,11 @@ async function predictWebcam() {
         runningMode = "VIDEO";
         await handLandmarker.setOptions({ runningMode: "VIDEO" });
     }
+
+    // Flip the canvas horizontally
+    canvasCtx.translate(canvasElement.width, 0);
+    canvasCtx.scale(-1, 1);
+
     let startTimeMs = performance.now();
     if (lastVideoTime !== video.currentTime) {
         lastVideoTime = video.currentTime;
@@ -102,14 +107,17 @@ async function predictWebcam() {
     canvasCtx.save();
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
     if (results.landmarks && results.landmarks.length > 0) {
-        for (const landmarks of results.landmarks) {
-            handleFingerState(landmarks);
+        results.landmarks.forEach((landmarks, index) => {
+            // Assuming 'results.handednesses' exists and its length matches 'results.landmarks'
+            const handedness = results.handednesses[index]; // Accessing the 'label' property if handedness information is an object
+    
+            handleFingerState(landmarks, handedness);
             drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {
                 color: "#00FF00",
                 lineWidth: 5
             });
             drawLandmarks(canvasCtx, landmarks, { color: "#FF0000", lineWidth: 2 });
-        }
+        })
     }
     else{
         stopAll();

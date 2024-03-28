@@ -18,17 +18,14 @@ limitations under the License. -->
 <script type="module" src="/js/script.js"></script>
 
 <body>
-  <h1>Hand landmark detection using the MediaPipe HandLandmarker task</h1>
+  <h1>Hand Synth! Pinch your fingers to your thumb to begin</h1>
 
   <section id="demos" class="invisible">
-
-    <h2>Demo: Webcam continuous hands landmarks detection</h2>
-    <p>Hold your hand in front of your webcam to get real-time hand landmarker detection.</p>
-
     <div id="liveView" class="videoView">
       <div style="position: relative;">
-        <video id="webcam" style="position: abso" autoplay playsinline></video>
+        <video id="webcam" style="position: absolute; left: 0; top: 0; transform: scaleX(-1);" autoplay playsinline></video>
         <canvas class="output_canvas" id="output_canvas" style="position: absolute; left: 0px; top: 0px;"></canvas>
       </div>
     </div>
-</section><!-- Copyright 2023 The MediaPipe Authors.
+</section>
+</body>
