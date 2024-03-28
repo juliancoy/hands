@@ -9,6 +9,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 import { HandLandmarker, FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0";
+import { handleFingerState, stopAll } from '/js/soundSynthesis.js';
 const demosSection = document.getElementById("demos");
 let handLandmarker = undefined;
 let runningMode = "IMAGE";
@@ -100,14 +101,18 @@ async function predictWebcam() {
     }
     canvasCtx.save();
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-    if (results.landmarks) {
+    if (results.landmarks && results.landmarks.length > 0) {
         for (const landmarks of results.landmarks) {
+            handleFingerState(landmarks);
             drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {
                 color: "#00FF00",
                 lineWidth: 5
             });
             drawLandmarks(canvasCtx, landmarks, { color: "#FF0000", lineWidth: 2 });
         }
+    }
+    else{
+        stopAll();
     }
     canvasCtx.restore();
     // Call this function again to keep predicting when the browser is ready.
