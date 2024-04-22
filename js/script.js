@@ -9,7 +9,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 import { HandLandmarker, FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0";
-import { handleFingerState, stopAll, initialize } from '/js/soundSynthesis.js';
+import { handleFingerState, stopAll, initialize } from './soundSynthesis.js';
 const demosSection = document.getElementById("demos");
 let handLandmarker = undefined;
 let runningMode = "VIDEO";
